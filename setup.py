@@ -13,11 +13,11 @@ setup(
     install_requires=[
         "torch",
         "pytorch3d",
-        "torchvision",
-        "black==21.12b0",
         "smplx",
         "omegaconf",
+        "chumpy",
         "pre-commit",
+        "black==20.8b1",
     ],
     classifiers=[
         "Development Status :: 1 - Planning",
