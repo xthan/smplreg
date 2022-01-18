@@ -2,8 +2,10 @@
 
 A Pytorch3D-based registration method between a reconstructed point cloud (e.g., the output of PIFuHD) and an estimated SMPL mesh (e.g., ProHMR).
 
-![Before registration](data/before_registration.png)
-![After registration](data/after_registration.png)
+![Before registration](data/before_registration.jpg)
+![After registration](data/after_registration.jpg)
+
+Left: before registration. Right: after registration.
 
 ## Install
 
