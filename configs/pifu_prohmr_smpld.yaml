@@ -17,7 +17,7 @@ loss_weights:                     # Weights of different loss, 0 means ignoring 
     # shape_reg: 1                # Shape regularizer
     # pose_reg: 1                 # Pose regularizer
 
-max_iter: 1000                    # Maximum steps of ICP
+max_iter: 3000                    # Maximum steps of ICP
 lr: 1e-3                          # Learning rate
 ftol: 1e-9                        # Relative loss change tolerance.
 gtol: 1e-9                        # Absolute gradient value tolerance.

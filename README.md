@@ -4,8 +4,9 @@ A Pytorch3D-based registration method between a reconstructed point cloud (e.g.,
 
 ![Before registration](data/figures/before_registration.jpg)
 ![After registration](data/figures/after_registration.jpg)
+![After registration](data/figures/after_smpld_registration.jpg)
 
-Left: before registration. Right: after registration.
+Left: before registration. Middel: after SMPL registration. Right: after SMPL+D registration.
 
 ## Install
 
@@ -21,16 +22,26 @@ python3 setup.py develop -i http://mirrors.aliyun.com/pypi/simple/
 
 ## Running registration
 
-```
-python3 scripts/smpl_registration.py
-```
-
 The registration will optimize SMPL's shape / pose / scale / translation to align the point cloud and SMPL vertices.
 
-The results will be saved in the ```outputs/register_smpl.obj``` (for visualization) and ```outputs/register_smpl.pkl```.
+SMPL-based registration:
+
+```
+python3 scripts/smpl_registration.py --config configs/pifu_prohmr_smpl.yaml
+```
+
+SMPL+D-based registration:
+
+```
+python3 scripts/smpl_registration.py --config configs/pifu_prohmr_smpld.yaml
+```
+
+The results will be saved in the ```outputs/register_smpl.obj``` (for visualization) and ```outputs/register_smpl.pkl``` (with the registered SMPL parameters).
 
 
 ## Animation of the registrated model
+
+With a registered SMPL or SMPL+D model, the avatar can be animated given a motion sequence.
 
 ```
 python3 scripts/smpl_animation.py
