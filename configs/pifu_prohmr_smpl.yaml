@@ -6,14 +6,12 @@ smpl:                     # SMPL related assets
   mean_params: data/smpl/smpl_mean_params.npz
   mesh: data/smpl/smpl_example_mesh.obj
 
+body_model: smpl
+
 loss_weights:             # Weights of different loss, 0 means ignoring that loss
-    # point_to_mesh: 1    # Point to plane distance
-    # coupling: 1         # Coupling loss between initial SMPL estimation and the final results
     chamfer: 1            # Chamfer loss
-    # shape_reg: 1        # Shape regularizer
-    # pose_reg: 1         # Pose regularizer
 
 max_iter: 10000           # Maximum steps of ICP
-lr: 1e-2                  # Learning rate
+lr: 5e-3                  # Learning rate
 ftol: 1e-9                # Relative loss change tolerance.
 gtol: 1e-9                # Absolute gradient value tolerance.

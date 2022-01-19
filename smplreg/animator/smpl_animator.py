@@ -1,4 +1,4 @@
-""" Registration between a point cloud and a SMPL parametric model.
+""" Animate a registered SMPL model given a SMPL motion sequence.
 """
 
 import torch
@@ -8,36 +8,37 @@ import pickle as pkl
 
 from scipy.spatial.transform import Rotation as R
 from smplreg.models.smpl_wrapper import SMPLWrapper
-from smplreg.loss.registration_loss import RegistrationLoss
-from smplreg.loss.utils import rel_change
 
 
-class SMPLRegister:
+class SMPLAnimator:
     def __init__(self, config):
         self.config = config
         self.device = torch.device("cuda")
         # Load SMPL model.
         smpl_cfg = {k.lower(): v for k, v in dict(config.smpl).items()}
         self.smpl = SMPLWrapper(**smpl_cfg).to(self.device)
-        self.registration_loss = RegistrationLoss(config.loss_weights)
-        self.smpl_faces = (
-            pytorch3d.io.load_obj(config.smpl.mesh)[1][0].to(self.device).unsqueeze(0)
-        )
+        self.smpl_faces = pytorch3d.io.load_obj(config.smpl.mesh)[1][0]
 
-    def __call__(self, point_cloud, init_smpl_params):
-        """Registration."""
-        print(
-            "Registering %s to SMPL given %s as an initialization ..."
-            % (point_cloud, init_smpl_params)
-        )
+    def __call__(self, point_cloud, registered_smpl_params, motion_sequence):
+        """Registration.
+        Args:
+            point_cloud: N x 3 point cloud
+            registered_smpl_params: dictionary of registered SMPL results (
+                contianing betas, body_pose, global_orient, vertices, etc.)
+            motion_sequence: F x 24 x 3, SMPL motion sequence of F frames.
+        """
+        print("Animating %s according to %s  ..." % (point_cloud, motion_sequence))
 
         # Read data from file. Only support batch_size = 1
         self.point_cloud = (
             pytorch3d.io.load_obj(point_cloud)[0].unsqueeze(0).to(self.device)
         )
-        self.init_smpl_params = pkl.load(open(init_smpl_params, "rb"))
+        self.registered_smpl_params = pkl.load(open(registered_smpl_params, "rb"))
+        self.motion_sequence = pkl.load(open(motion_sequence, "rb"))
+        import pbd
 
-        # Rotate SMPL mesh as it is upside-down.
+        pdb.set_trace()
+        # Rotate SMPL motion sequence it is upside-down w.r.t point_cloud.
         pose = self.init_smpl_params["pose"]
         pose[:, :3] = (
             R.from_euler("xyz", [180, 0, 0], degrees=True) * R.from_rotvec(pose[:, :3])
@@ -58,6 +59,7 @@ class SMPLRegister:
         optimizer = torch.optim.Adam(
             opt_params,
             lr=self.config.lr,
+            betas=(0.5, 0.999),
         )
 
         # Optimize with ICP.
@@ -79,7 +81,7 @@ class SMPLRegister:
             optimizer.step()
 
             # Logging and step criterion.
-            if i % 10 == 0:
+            if i % 100 == 0:
                 print(
                     "Step: %03d / %03d; Loss: %08f "
                     % (i, self.config.max_iter, loss.item())
@@ -102,16 +104,17 @@ class SMPLRegister:
 
             prev_loss = loss.item()
 
+        # Convert final results to numpy.
         self.registered_smpl_output = smpl_output
 
-    def save_results(self, output_folder, name="registered_smpl"):
+    def save_results(self, output_folder):
         """Dump the registered results the output_folder"""
         print("Writing results to %s ..." % output_folder)
         os.makedirs(output_folder, exist_ok=True)
         pytorch3d.io.save_obj(
-            os.path.join(output_folder, "%s.obj" % name),
+            os.path.join(output_folder, "registered_smpl.obj"),
             verts=self.registered_smpl_output["vertices"][0],
-            faces=self.smpl_faces[0],
+            faces=self.smpl_faces,
         )
         dump_smpl_output = dict(self.registered_smpl_output)
 
@@ -120,5 +123,5 @@ class SMPLRegister:
                 dump_smpl_output[k] = dump_smpl_output[k].cpu().detach().numpy()
         pkl.dump(
             dump_smpl_output,
-            open(os.path.join(output_folder, "%s.pkl" % name), "wb"),
+            open(os.path.join(output_folder, "registered_smpl.pkl"), "wb"),
         )

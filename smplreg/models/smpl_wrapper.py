@@ -1,6 +1,8 @@
 import torch
 import pickle
 from typing import Optional
+
+# Note that this is a customized SMPL with displacement (i.e., SMPLD)
 from smplx import SMPL as SMPL
 from smplx.lbs import vertices2joints
 from smplx.utils import SMPLOutput
@@ -11,7 +13,7 @@ class SMPLWrapper(SMPL):
         """
         Extension of the official SMPL implementation to support more joints.
         Args:
-            Same as the original SMPL.
+            Same as the original SMPL with a detail parameter modeling the per vertex displacement.
             joint_regressor_extra (str): Path to extra joint regressor.
         """
         super(SMPLWrapper, self).__init__(*args, **kwargs)
