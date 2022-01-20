@@ -8,9 +8,25 @@ A Pytorch3D-based registration method between a reconstructed point cloud (e.g.,
 
 Left: before registration. Middel: after SMPL registration. Right: after SMPL+D registration.
 
+The registered SMPL+D mesh could be further animated given a motion sequence:
+
+<img src="data/figures/animation_video.gif" height="480">
+
 ## Install
 
+You need to first install a modified version of smplx, which support smpl+d body model:
+
 ```
+git clone https://aigit.huya.com/hanxintong/fast-smplx.git
+cd fast-smplx
+python3 setup.py install
+```
+
+Then install ```smplreg``` packages:
+
+```
+git clone https://aigit.huya.com/hanxintong/smplreg.git
+cd smplreg
 python3 setup.py develop -i http://mirrors.aliyun.com/pypi/simple/
 ```
 
