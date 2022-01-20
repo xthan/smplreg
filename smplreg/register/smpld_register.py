@@ -48,63 +48,66 @@ class SMPLDRegister(SMPLRegister):
 
         self.point_cloud.requires_grad = False
 
-        # Setup optimizer.
-        opt_params = [betas, thetas, scale, translation]
-        optimizer = torch.optim.Adam(
-            opt_params,
-            lr=self.config.lr,
+        #         # Setup optimizer.
+        #         opt_params = [betas, thetas, scale, translation]
+        #         optimizer = torch.optim.Adam(
+        #             opt_params,
+        #             lr=self.config.lr,
+        #         )
+
+        #         # Optimize with ICP.
+        #         prev_loss = None
+        #         for i in range(self.config.max_iter):
+        #             smpl_params = {
+        #                 "betas": betas,
+        #                 "global_orient": thetas[:, :3],
+        #                 "body_pose": thetas[:, 3:],
+        #             }
+        #             smpl_output = self.smpl(**smpl_params, pose2rot=True)
+        #             smpl_output.vertices = scale * smpl_output.vertices + translation
+        #             smpl_output.detail = detail
+        #             smpl_output.faces = self.smpl_faces
+        #             loss_dict = self.registration_loss(smpl_output, self.point_cloud)
+        #             loss = loss_dict["chamfer"]  # Only chamfer loss is enough
+
+        #             # Optimize
+        #             optimizer.zero_grad()
+        #             loss.backward()
+        #             optimizer.step()
+
+        #             # Logging and stop criterion.
+        #             if i % 10 == 0:
+        #                 print(
+        #                     "Step: %03d / %03d; Loss: %08f "
+        #                     % (i, self.config.max_iter, loss.item())
+        #                 )
+        #                 print(loss_dict)
+        #             if i > 0:
+        #                 loss_rel_change = rel_change(prev_loss, loss.item())
+        #                 if loss_rel_change < self.config.ftol:
+        #                     print("Finished due to small relative loss change.")
+        #                     break
+        #             if all(
+        #                 [
+        #                     torch.abs(var.grad.view(-1).max()).item() < self.config.gtol
+        #                     for var in opt_params
+        #                     if var.grad is not None
+        #                 ]
+        #             ):
+        #                 print("Finished due to small absolute gradient value change.")
+        #                 break
+
+        #             prev_loss = loss.item()
+
+        # Use pickle file to debug.
+        # pkl.dump({'betas': betas, 'thetas': thetas, 'scale': scale, 'translation': translation},
+        #               open('outputs/tmp.pkl', 'wb'))
+        saved_dict = pkl.load(open("outputs/tmp.pkl", "rb"))
+        betas, thetas, = (
+            saved_dict["betas"],
+            saved_dict["thetas"],
         )
-
-        # Optimize with ICP.
-        prev_loss = None
-        for i in range(self.config.max_iter):
-            smpl_params = {
-                "betas": betas,
-                "global_orient": thetas[:, :3],
-                "body_pose": thetas[:, 3:],
-            }
-            smpl_output = self.smpl(**smpl_params, pose2rot=True)
-            smpl_output.vertices = scale * smpl_output.vertices + translation
-            smpl_output.detail = detail
-            smpl_output.faces = self.smpl_faces
-            loss_dict = self.registration_loss(smpl_output, self.point_cloud)
-            loss = loss_dict["chamfer"]  # Only chamfer loss is enough
-
-            # Optimize
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-
-            # Logging and stop criterion.
-            if i % 10 == 0:
-                print(
-                    "Step: %03d / %03d; Loss: %08f "
-                    % (i, self.config.max_iter, loss.item())
-                )
-                print(loss_dict)
-            if i > 0:
-                loss_rel_change = rel_change(prev_loss, loss.item())
-                if loss_rel_change < self.config.ftol:
-                    print("Finished due to small relative loss change.")
-                    break
-            if all(
-                [
-                    torch.abs(var.grad.view(-1).max()).item() < self.config.gtol
-                    for var in opt_params
-                    if var.grad is not None
-                ]
-            ):
-                print("Finished due to small absolute gradient value change.")
-                break
-
-            prev_loss = loss.item()
-
-        # # Use pickle file to debug.
-        # # pkl.dump({'betas': betas, 'thetas': thetas, 'scale': scale, 'translation': translation},
-        # #               open('outputs/tmp.pkl', 'wb'))
-        # saved_dict = pkl.load(open('outputs/tmp.pkl', 'rb'))
-        # betas, thetas,  = saved_dict['betas'], saved_dict['thetas']
-        # scale, translation = saved_dict['scale'], saved_dict['translation']
+        scale, translation = saved_dict["scale"], saved_dict["translation"]
 
         # Then optimize detail
         detail.requires_grad = True

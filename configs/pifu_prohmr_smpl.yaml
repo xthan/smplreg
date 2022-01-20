@@ -1,3 +1,5 @@
+device: cuda              # Run on GPU (cuda) or CPU (cpu)
+
 smpl:                     # SMPL related assets
   model_path: data/smpl
   gender: neutral

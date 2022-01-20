@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 from smplreg.animator.smpl_animator import SMPLAnimator
+from omegaconf import OmegaConf
 
 parser = ArgumentParser()
 parser.add_argument(
@@ -12,24 +13,26 @@ parser.add_argument(
 )
 parser.add_argument(
     "--registered_smpl_params",
-    default="outputs/registered_smpl.pkl",
+    default="outputs/registered_smpld.pkl",
     help="SMPL output after registration.",
 )
 parser.add_argument(
-    "--animation",
-    default="data/animation/.pkl",
-    help="Animation sequence of SMPL parameters.",
+    "--motion_sequence",
+    default="/data/motions/gWA_sFM_cAll_d27_mWA4_ch19.pkl",
+    help="Animation sequence of SMPL parameters (currently in AIST format).",
 )
 parser.add_argument(
-    "--output_video", default="outputs/animation.mp4", help="Video of animated results."
+    "--output_video",
+    default="outputs/animation_video.mp4",
+    help="Video of animated results.",
 )
 opts = parser.parse_args()
 
 
 def main():
-    smpl_animator = SMPLAnimator(opts.config)
+    config = OmegaConf.load(opts.config)
+    smpl_animator = SMPLAnimator(config)
     smpl_animator(opts.point_cloud, opts.registered_smpl_params, opts.motion_sequence)
-    smpl_animator.save_results(opts.output_video)
 
 
 if __name__ == "__main__":
