@@ -4,7 +4,7 @@ from omegaconf import OmegaConf
 
 parser = ArgumentParser()
 parser.add_argument(
-    "--config", default="configs/pifu_prohmr.yaml", help="Configure file."
+    "--config", default="configs/pifu_prohmr_smpld.yaml", help="Configure file."
 )
 parser.add_argument(
     "--point_cloud",
@@ -18,7 +18,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--motion_sequence",
-    default="/data/motions/gWA_sFM_cAll_d27_mWA4_ch19.pkl",
+    default="data/motions/gWA_sFM_cAll_d27_mWA4_ch19.pkl",
     help="Animation sequence of SMPL parameters (currently in AIST format).",
 )
 parser.add_argument(

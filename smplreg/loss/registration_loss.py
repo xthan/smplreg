@@ -52,6 +52,6 @@ class RegistrationLoss:
                 loss_dict["normal_consistency"] = (
                     self.loss_weights["normal_consistency"] * normal_consistency_loss
                 )
-        # TODO add point-to-mesh distance
+        # TODO: add point-to-mesh distance
         # https://pytorch3d.readthedocs.io/en/latest/modules/loss.html
         return loss_dict

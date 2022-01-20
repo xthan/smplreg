@@ -1,4 +1,5 @@
 device: cuda              # Run on GPU (cuda) or CPU (cpu)
+
 smpl:                     # SMPL related assets
   model_path: data/smpl
   gender: neutral
@@ -9,18 +10,18 @@ smpl:                     # SMPL related assets
 
 body_model: smpld                 # Body model, support smpl or smpld
 
-loss_weights:                     # Weights of different loss, 0 means ignoring that loss
-    # point_to_mesh: 1            # Point to plane distance
-    coupling: 1                 # Coupling loss between initial SMPL estimation and the final results
+smpl_loss_weights:                # Weights of different loss, 0 means ignoring that loss
+    chamfer: 1                   # Coupling loss between initial SMPL estimation and the final results
+
+smpld_loss_weights:               # Weights of different loss for optimizing details
     chamfer: 1                    # Chamfer loss
-    laplacian: 0.2               # Laplacian smoothing loss
+    coupling: 1                   # Coupling loss between initial SMPL estimation and the final results
+    laplacian: 0.2                # Laplacian smoothing loss
     normal_consistency: 0.001     # Neighboring face normal consistency loss
-    # shape_reg: 1                # Shape regularizer
-    # pose_reg: 1                 # Pose regularizer
 
 renderer:
     cam_trans: [0, -0.5, 2]       # camera translation
-    texture_size: 512             # rendered image size
+    image_size: 512               # rendered image size
 
 max_iter: 3000                    # Maximum steps of ICP
 lr: 1e-3                          # Learning rate

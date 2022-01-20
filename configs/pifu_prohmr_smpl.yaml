@@ -10,7 +10,7 @@ smpl:                     # SMPL related assets
 
 body_model: smpl
 
-loss_weights:             # Weights of different loss, 0 means ignoring that loss
+smpl_loss_weights:        # Weights of different loss, 0 means ignoring that loss
     chamfer: 1            # Chamfer loss
 
 max_iter: 10000           # Maximum steps of ICP
