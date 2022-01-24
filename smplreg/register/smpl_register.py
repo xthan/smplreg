@@ -79,6 +79,8 @@ class SMPLRegister:
             smpl_output.vertices = self.scale * smpl_output.vertices + self.translation
             smpl_output.faces = self.smpl_faces
             smpl_output.detail = self.detail
+            smpl_output.scale = self.scale
+            smpl_output.transl = self.translation
             loss_dict = self.registration_loss(smpl_output, self.point_cloud)
             loss = sum(loss_dict.values())
 

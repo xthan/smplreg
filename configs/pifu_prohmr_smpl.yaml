@@ -13,6 +13,8 @@ body_model: smpl
 smpl_loss_weights:        # Weights of different loss, 0 means ignoring that loss
     chamfer: 1            # Chamfer loss
 
+optimize_lbs: True        # If lbs of the point cloud is also optimized
+
 max_iter: 10000           # Maximum steps of ICP
 lr: 5e-3                  # Learning rate
 ftol: 1e-9                # Relative loss change tolerance.

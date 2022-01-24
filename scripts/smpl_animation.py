@@ -1,5 +1,5 @@
 from argparse import ArgumentParser
-from smplreg.animator.smpl_animator import SMPLAnimator
+from smplreg.animator import SMPLAnimator, MeshAnimator
 from omegaconf import OmegaConf
 
 parser = ArgumentParser()
@@ -18,7 +18,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--motion_sequence",
-    default="data/motions/gWA_sFM_cAll_d27_mWA4_ch19.pkl",
+    default="data/motions/amass_1000.pkl",
     help="Animation sequence of SMPL parameters (currently in AIST format).",
 )
 parser.add_argument(
@@ -31,8 +31,9 @@ opts = parser.parse_args()
 
 def main():
     config = OmegaConf.load(opts.config)
-    smpl_animator = SMPLAnimator(config)
-    smpl_animator(opts.point_cloud, opts.registered_smpl_params, opts.motion_sequence)
+    # animator = SMPLAnimator(config)
+    animator = MeshAnimator(config)
+    animator(opts.point_cloud, opts.registered_smpl_params, opts.motion_sequence)
 
 
 if __name__ == "__main__":

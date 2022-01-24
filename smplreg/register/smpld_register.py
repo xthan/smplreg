@@ -6,8 +6,8 @@ import pytorch3d.io
 import pickle as pkl
 
 from scipy.spatial.transform import Rotation as R
-from smplreg.register.smpl_register import SMPLRegister
 from smplreg.loss.registration_loss import RegistrationLoss
+from .smpl_register import SMPLRegister
 
 
 class SMPLDRegister(SMPLRegister):
