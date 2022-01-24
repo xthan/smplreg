@@ -135,10 +135,14 @@ class BaseAnimator:
             )
         )
         self.thetas = torch.from_numpy(pose).float().to(self.device)
-
-        self.detail = (
-            torch.from_numpy(registered_smpl_params["detail"]).float().to(self.device)
-        )
+        if registered_smpl_params["detail"] is None:
+            self.detail = None
+        else:
+            self.detail = (
+                torch.from_numpy(registered_smpl_params["detail"])
+                .float()
+                .to(self.device)
+            )
         self.faces = torch.from_numpy(registered_smpl_params["faces"]).to(self.device)
         self.transl = torch.from_numpy(registered_smpl_params["transl"]).to(self.device)
         self.scale = torch.from_numpy(registered_smpl_params["scale"]).to(self.device)
@@ -167,7 +171,8 @@ class BaseAnimator:
         )
 
         # SMPL forward and render one frame a time (could be done in batches).
-        for i in tqdm(range(smpl_motion_poses.shape[0])):
+        # for i in tqdm(range(smpl_motion_poses.shape[0])):
+        for i in tqdm(range(100)):
             rendered_image = self.render(smpl_motion_poses[i], smpl_motion_trans[i])
             # cv2.imwrite("outputs/image.png", animated_image)  #  Image debugging
             video_writer.write(rendered_image)

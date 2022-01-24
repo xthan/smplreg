@@ -21,8 +21,8 @@ def joint_transform(
     pose2rot: bool = True,
     detail: Tensor = None,
 ) -> Tuple[Tensor, Tensor]:
-    """Performs Linear Blend Skinning with the given shape and pose parameters
-
+    """Obtain Joint transformations the given shape and pose parameters
+       Modified from the original lbs function of smplx
     Parameters
     ----------
     betas : torch.tensor BxNB
