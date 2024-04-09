@@ -1,6 +1,6 @@
 # SMPL Registration
 
-A Pytorch3D-based registration method between a reconstructed point cloud (e.g., the output of PIFuHD) and an estimated SMPL mesh (e.g., ProHMR).
+A Pytorch3D-based registration method between a reconstructed point cloud (e.g., the output of PIFuHD, scan data, or synthetic data like CLOTH4D) and an estimated SMPL mesh (e.g., HMR, ProHMR, or PyMAF).
 
 <img src="data/figures/before_registration.jpg" height="360">
 <img src="data/figures/after_registration.jpg" height="360">
@@ -17,17 +17,17 @@ The registered SMPL+D mesh could be further animated given a motion sequence:
 You need to first install a modified version of smplx, which support smpl+d body model:
 
 ```
-git clone https://aigit.huya.com/hanxintong/fast-smplx.git
-cd fast-smplx
-python3 setup.py install
+git clone https://github.com/xthan/smplxd.git
+cd smplxd
+pip install -e .
 ```
 
-Then install ```smplreg``` packages:
+Then install ```smplreg``` package:
 
 ```
-git clone https://aigit.huya.com/hanxintong/smplreg.git
+git clone https://github.com/xthan/smplreg.git
 cd smplreg
-python3 setup.py develop -i http://mirrors.aliyun.com/pypi/simple/
+pip install -e .
 ```
 
 ## Point cloud and SMPL estimation results
@@ -43,17 +43,22 @@ The registration will optimize SMPL's shape / pose / scale / translation to alig
 SMPL-based registration:
 
 ```
-python3 scripts/smpl_registration.py --config configs/pifu_prohmr_smpl.yaml
+python3 scripts/smpl_registration.py --config configs/smpl.yaml
 ```
 
 SMPL+D-based registration:
 
 ```
-python3 scripts/smpl_registration.py --config configs/pifu_prohmr_smpld.yaml
+python3 scripts/smpl_registration.py --config configs/smpld.yaml
 ```
 
 The results will be saved in the ```outputs/register_smpl.obj``` (for visualization) and ```outputs/register_smpl.pkl``` (with the registered SMPL parameters).
 
+## Running on [CLOTH4D](https://github.com/AemikaChow/CLOTH4D)
+
+```
+python3 scripts/cloth4d_smpl_registration.py
+```
 
 ## Animation of the registrated model
 

@@ -3,9 +3,7 @@ from omegaconf import OmegaConf
 
 
 parser = ArgumentParser()
-parser.add_argument(
-    "--config", default="configs/pifu_prohmr_smpl.yaml", help="Configure file."
-)
+parser.add_argument("--config", default="configs/smpl.yaml", help="Configure file.")
 parser.add_argument(
     "--point_cloud",
     default="data/example/hongyu_apose_pifu_output.obj",

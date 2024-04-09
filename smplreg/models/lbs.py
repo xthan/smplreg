@@ -1,7 +1,7 @@
 """ Modified lbs functions to animate a registered mesh of any number of vertices.
 """
 
-from smplx.lbs import (
+from smplxd.lbs import (
     Tensor,
     Tuple,
     blend_shapes,

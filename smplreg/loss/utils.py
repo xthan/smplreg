@@ -10,4 +10,4 @@ def rel_change(prev_val: float, curr_val: float) -> float:
     Returns:
         float: Relative change
     """
-    return (prev_val - curr_val) / max([np.abs(prev_val), np.abs(curr_val), 1])
+    return abs(prev_val - curr_val) / max([np.abs(prev_val), np.abs(curr_val), 1])

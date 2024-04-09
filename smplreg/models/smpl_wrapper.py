@@ -3,9 +3,9 @@ import pickle
 from typing import Optional
 
 # Note that this is a customized SMPL with displacement (i.e., SMPLD)
-from smplx import SMPL as SMPL
-from smplx.lbs import vertices2joints
-from smplx.utils import SMPLOutput
+from smplxd import SMPL as SMPL
+from smplxd.lbs import vertices2joints
+from smplxd.utils import SMPLOutput
 
 
 class SMPLWrapper(SMPL):

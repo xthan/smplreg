@@ -1,5 +1,6 @@
 # Ignored files of this repo
 /outputs/
+/tmp/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

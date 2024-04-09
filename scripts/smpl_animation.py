@@ -3,9 +3,7 @@ from smplreg.animator import SMPLAnimator, MeshAnimator
 from omegaconf import OmegaConf
 
 parser = ArgumentParser()
-parser.add_argument(
-    "--config", default="configs/pifu_prohmr_smpld.yaml", help="Configure file."
-)
+parser.add_argument("--config", default="configs/smpld.yaml", help="Configure file.")
 parser.add_argument(
     "--point_cloud",
     default="data/example/hongyu_apose_pifu_output.obj",
